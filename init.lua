@@ -25,6 +25,7 @@ require('packer').startup(function(use)
     -- Fuzzy Finder
     use {'nvim-telescope/telescope.nvim', tag = '0.1.1',
           requires = { {'nvim-lua/plenary.nvim'} }}
+    use { "nvim-telescope/telescope-file-browser.nvim" }
     -- For adding Opening and Closing Commas, Parentheses etc
     use 'windwp/nvim-autopairs'
 
@@ -34,6 +35,32 @@ require('packer').startup(function(use)
     -- Formatting and Linting
     use 'dense-analysis/ale'
     use 'prettier/vim-prettier'
+    -- Auto-save
+    use({
+        "okuuva/auto-save.nvim",
+        tag = 'v1*',
+        config = function()
+            require("auto-save").setup({
+                enabled = true, -- Enable auto-save when the plugin is loaded
+                trigger_events = {
+                    immediate_save = { "BufLeave", "FocusLost", "QuitPre", "VimSuspend" }, -- Events that trigger an immediate save
+                    defer_save = { "InsertLeave", "TextChanged" }, -- Events that trigger a deferred save (after debounce_delay)
+                    cancel_deferred_save = { "InsertEnter" }, -- Events that cancel pending deferred save
+                },
+                condition = nil, -- No specific condition (set to a function if needed)
+                write_all_buffers = false, -- Do not write all buffers when the current buffer is saved
+                noautocmd = false, -- Don't disable autocmds when saving
+                lockmarks = false, -- Don't lock marks when saving
+                debounce_delay = 1000, -- Delay after which a pending save is executed
+                debug = false, -- Set to true to enable logging to 'auto-save.log'
+                callback = function()
+                    -- Display a message whenever auto-save runs
+                    local time = vim.fn.strftime("%H:%M:%S")
+                    vim.notify("File saved automatically!", vim.log.levels.INFO)
+                end,
+            })
+        end
+    })
 end)
 
 -- Catppuccin Theme Configuration
@@ -88,7 +115,6 @@ require('nvim-treesitter.configs').setup({
         additional_vim_regex_highlighting = false,
     },
 })
-
 -- Nvim-tree setup
 require("nvim-tree").setup({
     renderer = {
@@ -98,8 +124,32 @@ require("nvim-tree").setup({
     filters = {
         dotfiles = false,
     },
-})
+    git = {
+        enable = true,
+        ignore = false,
+    },
+    view = {
+        width = 30, -- Adjust the width of the tree window
+        side = "left", -- Place the tree on the left
+    },
+    on_attach = function(bufnr)
+        local api = require('nvim-tree.api')
 
+        local function opts(desc)
+            return { desc = 'NvimTree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        -- Custom key mappings
+        vim.keymap.set('n', 'u', api.tree.change_root_to_parent, opts('Go to parent directory'))
+        vim.keymap.set('n', 's', api.node.open.vertical, opts('Open in vertical split'))
+        vim.keymap.set('n', 'i', api.node.open.horizontal, opts('Open in horizontal split'))
+        vim.keymap.set('n', 'r', api.fs.rename, opts('Rename file'))
+        vim.keymap.set('n', 'd', api.fs.remove, opts('Delete file'))
+        vim.keymap.set('n', 'n', api.fs.create, opts('Create file or directory'))
+        vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Open file'))
+        vim.keymap.set('n', 'q', api.tree.close, opts('Close Nvim-Tree'))
+    end,
+})
 -- Telescope setup
 require("telescope").setup({
     defaults = {
@@ -111,7 +161,28 @@ require("telescope").setup({
         color_devicons = true,
         winblend = 10,
     },
+    pickers = {
+        find_files = {
+            hidden = true, -- Include hidden files
+        },
+    },
+    extensions = {
+        file_browser = {
+            theme = "ivy", -- Use a compact dropdown theme
+            hijack_netrw = true, -- Replace netrw with Telescope file browser
+        },
+    },
 })
+
+-- Load Telescope extensions
+require("telescope").load_extension("file_browser")
+
+-- Key bindings for Telescope
+vim.keymap.set('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true, desc = "Find files" })
+vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<CR>', { noremap = true, silent = true, desc = "Live grep" })
+vim.keymap.set('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true, silent = true, desc = "List buffers" })
+vim.keymap.set('n', '<leader>fh', ':Telescope help_tags<CR>', { noremap = true, silent = true, desc = "Search help tags" })
+vim.keymap.set('n', '<leader>fe', ':Telescope file_browser<CR>', { noremap = true, silent = true, desc = "Open file browser" })
 
 -- LSP configurations
 require'lspconfig'.pyright.setup{}
