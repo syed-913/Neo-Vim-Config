@@ -134,10 +134,6 @@ Yes, this configuration works on Windows, Linux, and macOS. Just ensure you have
 
 Feel free to fork this repository and submit pull requests with your improvements. If you find any issues, please open an issue on GitHub.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ---
 
 Happy coding! 🚀
