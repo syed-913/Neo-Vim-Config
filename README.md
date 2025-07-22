@@ -97,7 +97,7 @@ Before setting up the NeoVim configuration, ensure you have the following depend
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git ~/.config/nvim
+   git clone https://github.com/syed-913/Neo-Vim-Config.git ~/.config/nvim
    ```
 
 2. **Install Packer.nvim** (if not already installed):
