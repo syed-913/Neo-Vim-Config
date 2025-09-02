@@ -25,6 +25,7 @@ This setup leverages **Lazy.nvim**, a next-generation plugin manager that's desi
 * Neovim v0.9.0 or later
 * Git
 * A C compiler for some plugins.
+* Latest `nodejs` [package](https://nodejs.org/en/download/).
 
 #### Installation Steps:
 1.  **Backup Your Current Configuration**: It's highly recommended to back up your existing Neovim configuration directory first.
