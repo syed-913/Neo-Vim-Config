@@ -1,7 +1,6 @@
 -- ============================================================================
 -- || Core Configuration using Lazy.nvim                                    ||
 -- ============================================================================
-
 -- A. Bootstrap Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -18,9 +17,13 @@ vim.opt.rtp:prepend(lazypath)
 
 -- B. Set up Lazy.nvim with all plugins
 require("lazy").setup({
+  -- This line loads the new plugin file
+  { import = "plugins.visuals" },
   -- Core Plugin Manager
   "folke/lazy.nvim",
-
+  -- File Icons
+  { "nvim-tree/nvim-web-devicons", opts = {} },
+  { "nvim-tree/nvim-tree.lua", opts = {} },
   -- Utility Plugins
   { "folke/which-key.nvim", opts = {} },
   "nvim-lua/plenary.nvim",
@@ -51,27 +54,20 @@ require("lazy").setup({
     event = "BufReadPost",
   },
 
-  -- Lualine: Statusline
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("lualine").setup({
-        options = {
-          section_separators = { left = "", right = "" },
-          component_separators = { left = "", right = "" },
-        },
-      })
-    end,
-  },
-
-  -- Nvim-Tree: File Explorer
+-- Nvim-Tree: File Explorer
   {
     "nvim-tree/nvim-tree.lua",
     lazy = false,
     cmd = { "NvimTreeToggle" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
       require("nvim-tree").setup({
+        view = {
+          width = 30,
+          side = "left",
+        },
         renderer = {
           highlight_opened_files = "all",
           highlight_git = true,
@@ -82,10 +78,6 @@ require("lazy").setup({
         git = {
           enable = true,
           ignore = false,
-        },
-        view = {
-          width = 30,
-          side = "left",
         },
         actions = {
           open_file = {
@@ -178,6 +170,14 @@ require("lazy").setup({
     end,
   },
 
+  -- NEW: This plugin uses treesitter to add, remove, and update HTML closing tags.
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "html", "javascriptreact", "typescriptreact" },
+    config = function()
+      require("nvim-ts-autotag").setup({})
+    end,
+  },
   -- Git Integration
   { "tpope/vim-fugitive" },
 
@@ -292,16 +292,31 @@ require("lazy").setup({
   end,
 },
   -- Snippets Engine
-  "L3MON4D3/LuaSnip",
-
+    "L3MON4D3/LuaSnip",
   -- Git Integration
   { "tpope/vim-fugitive" },
-
-  -- GitHub Copilot
-  {
-    "github/copilot.vim",
-    ft = { "lua", "python", "javascript", "html", "css" },
-  },
+{
+  "zbirenbaum/copilot.lua",
+  cmd = "Copilot",
+  event = "InsertEnter",
+  config = function()
+    require("copilot").setup({
+      suggestion = {
+        enabled = true,
+        auto_trigger = false, -- This is the key: it stops auto-suggestions
+        hide_during_completion = true,
+        debounce = 75,
+        keymap = {
+          accept = "<Tab>", -- Accept suggestion with Tab
+          next = "<M-]>",   -- Cycle to next suggestion (Alt + ])
+          prev = "<M-[>",   -- Cycle to previous (Alt + [)
+          dismiss = "<C-]>",-- Dismiss suggestion (Ctrl + ])
+        },
+      },
+      panel = { enabled = false }, -- Suggestion is the "ghost text", panel is a separate window
+    })
+  end,
+},
 
   -- TMUX Integration
   {
@@ -379,6 +394,7 @@ require("lazy").setup({
   -- Markdown Live Preview
   {
     "iamcco/markdown-preview.nvim",
+    enabled = false,
     build = "cd app && npm install",
     ft = "markdown",
     config = function()
@@ -395,6 +411,7 @@ require("lazy").setup({
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.expandtab = true
+vim.opt.autoindent = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.smartindent = true
@@ -404,6 +421,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.termguicolors = true
 vim.opt.mouse = "a"
+vim.opt.syntax = "on"
+vim.opt.indentkeys:remove({ "0{", "0}", "0)", "0]" })
 
 -- B. Key Mappings
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle File Explorer" })
@@ -413,6 +432,13 @@ vim.keymap.set("n", "<leader>h", ":Telescope help_tags<CR>", { noremap = true, s
 vim.keymap.set("n", "<leader>s", ":Telescope file_browser<CR>", { noremap = true, silent = true, desc = "Open file browser" })
 vim.keymap.set("n", "<leader>t", ":split term://bash<CR>", { noremap = true, silent = true, desc = "Open terminal in horizontal split" })
 vim.keymap.set("n", "<leader>v", ":vsplit term://bash<CR>", { noremap = true, silent = true, desc = "Open terminal in vertical split" })
+vim.keymap.set('n', '<leader>q', ':bprevious<CR>', { noremap = true, silent = true, desc = "Prev Buffer" })
+vim.keymap.set('n', '<leader>e', ':bnext<CR>', { noremap = true, silent = true, desc = "Next Buffer" })
+
+-- Trigger Copilot manually in Insert Mode
+vim.keymap.set('i', '<leader>x', function()
+  require("copilot.suggestion").next()
+end, { desc = "Manual Copilot Suggest" })
 
 -- C. TMUX keymaps using `toggleterm`
 vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<cr>", { desc = "Toggle Terminal" })
