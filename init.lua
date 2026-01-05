@@ -13,6 +13,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
+
 vim.opt.rtp:prepend(lazypath)
 
 -- B. Set up Lazy.nvim with all plugins
@@ -170,7 +171,7 @@ require("lazy").setup({
     end,
   },
 
-  -- NEW: This plugin uses treesitter to add, remove, and update HTML closing tags.
+    -- NEW: This plugin uses treesitter to add, remove, and update HTML closing tags.
   {
     "windwp/nvim-ts-autotag",
     ft = { "html", "javascriptreact", "typescriptreact" },
@@ -178,9 +179,15 @@ require("lazy").setup({
       require("nvim-ts-autotag").setup({})
     end,
   },
-  -- Git Integration
-  { "tpope/vim-fugitive" },
 
+    -- VGit: Git Integration with signs and hunk actions
+  {
+  'tanvirtin/vgit.nvim',
+  dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
+  -- Lazy loading on 'VimEnter' event is necessary.
+  event = 'VimEnter',
+  config = function() require("vgit").setup() end,
+  },
   -- Autocompletion and LSP
   {
     "williamboman/mason.nvim",
@@ -307,7 +314,8 @@ require("lazy").setup({
         hide_during_completion = true,
         debounce = 75,
         keymap = {
-          accept = "<Tab>", -- Accept suggestion with Tab
+          accept = "<C-Space>", -- Accept suggestion with Ctrl + Space
+          accept_word = "<C-Right", -- Accept word with Ctrl + Right
           next = "<M-]>",   -- Cycle to next suggestion (Alt + ])
           prev = "<M-[>",   -- Cycle to previous (Alt + [)
           dismiss = "<C-]>",-- Dismiss suggestion (Ctrl + ])
@@ -317,15 +325,6 @@ require("lazy").setup({
     })
   end,
 },
-
-  -- TMUX Integration
-  {
-    "aserowy/tmux.nvim",
-    config = function()
-      require("tmux").setup({})
-    end,
-    event = "VeryLazy",
-  },
 
   -- Formatting and Linting
   {
@@ -412,8 +411,8 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.expandtab = true
 vim.opt.autoindent = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
 vim.opt.smartindent = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.hlsearch = true
@@ -425,21 +424,17 @@ vim.opt.syntax = "on"
 vim.opt.indentkeys:remove({ "0{", "0}", "0)", "0]" })
 
 -- B. Key Mappings
-vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle File Explorer" })
+vim.keymap.set("n", "<leader>b", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle File Explorer" })
 vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { noremap = true, silent = true, desc = "Live Grep" })
-vim.keymap.set("n", "<leader>b", ":Telescope buffers<CR>", { noremap = true, silent = true, desc = "List buffers" })
+vim.keymap.set("n", "<leader>l", ":Telescope buffers<CR>", { noremap = true, silent = true, desc = "List buffers" })
 vim.keymap.set("n", "<leader>h", ":Telescope help_tags<CR>", { noremap = true, silent = true, desc = "Search help tags" })
-vim.keymap.set("n", "<leader>s", ":Telescope file_browser<CR>", { noremap = true, silent = true, desc = "Open file browser" })
-vim.keymap.set("n", "<leader>t", ":split term://bash<CR>", { noremap = true, silent = true, desc = "Open terminal in horizontal split" })
-vim.keymap.set("n", "<leader>v", ":vsplit term://bash<CR>", { noremap = true, silent = true, desc = "Open terminal in vertical split" })
+vim.keymap.set("n", "<leader>f", ":Telescope file_browser<CR>", { noremap = true, silent = true, desc = "Open file browser" })
+vim.keymap.set("n", "<leader>th", ":split term://bash<CR>", { noremap = true, silent = true, desc = "Open terminal in horizontal split" })
+vim.keymap.set("n", "<leader>tv", ":vsplit term://bash<CR>", { noremap = true, silent = true, desc = "Open terminal in vertical split" })
 vim.keymap.set('n', '<leader>q', ':bprevious<CR>', { noremap = true, silent = true, desc = "Prev Buffer" })
 vim.keymap.set('n', '<leader>e', ':bnext<CR>', { noremap = true, silent = true, desc = "Next Buffer" })
 
--- Trigger Copilot manually in Insert Mode
-vim.keymap.set('i', '<leader>x', function()
+-- Trigger Copilot manually in Insert 
+vim.keymap.set('n', '<leader>!', function()
   require("copilot.suggestion").next()
 end, { desc = "Manual Copilot Suggest" })
-
--- C. TMUX keymaps using `toggleterm`
-vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<cr>", { desc = "Toggle Terminal" })
-vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Exit terminal" })
