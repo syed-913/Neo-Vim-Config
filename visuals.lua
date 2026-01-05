@@ -3,19 +3,29 @@
 
 return {
   -- =========================================================================
-  -- 1. Kanagawa Theme: 'rebelot/kanagawa.nvim'
-  -- A beautifully crafted theme inspired by Japanese art and nature.
+  -- 1. Vesper Theme: 'datsfilipe/vesper.nvim'
   -- =========================================================================
-  {
-    "rebelot/kanagawa.nvim",
-    lazy = true,
-    event = "VeryLazy",
-    config = function()
-      -- This command sets the Kanagawa theme as your default colorscheme.
-      vim.cmd.colorscheme("kanagawa")
+  { 
+    "datsfilipe/vesper.nvim",
+    lazy = false,    -- Themes should load immediately
+    priority = 1000, -- Load this before all other plugins
+    opts = {
+      transparent = false,
+      italics = {
+        comments = true,
+        -- keywords = true,
+        -- functions = true,
+        strings = true,
+        -- variables = true,
+      },
+      overrides = {},
+      palette_overrides = {}
+    },
+    config = function(_, opts)
+      require("vesper").setup(opts) -- Pass the opts table above to setup
+      vim.cmd.colorscheme("vesper") -- Actually activate the theme
     end,
   },
-
   -- =========================================================================
   -- 2. Statusline: 'nvim-lualine/lualine.nvim'
   -- The configuration for your existing statusline plugin.
@@ -27,6 +37,7 @@ return {
     config = function()
       require("lualine").setup({
         options = {
+          theme = "vesper",
           -- Separators to create a clean, modern look.
           section_separators = { left = "", right = "" },
           component_separators = { left = "", right = "" },
@@ -125,5 +136,47 @@ return {
       },
     },
   },
+  -- =========================================================================
+  -- 7. LuxMotion: Smooth animations for all motions
+  -- =========================================================================
+  {
+    "LuxVim/nvim-luxmotion",
+    event = "VeryLazy",
+    config = function()
+      require("luxmotion").setup({
+        cursor = {
+          duration = 200, -- speed of cursor movement in ms
+          enabled = true,
+        },
+        scroll = {
+          duration = 500, -- speed of screen scrolling in ms
+          enabled = true,
+        },
+      })
+    end,
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {
+      lsp = { override = { ["vim.lsp.util.convert_input_to_markdown_lines"] = true } },
+      presets = {
+        bottom_search = true, -- classic bottom search
+        command_palette = true, -- center floating command line
+        long_message_to_split = true, 
+      },
+    },
+  },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      dashboard = { enabled = true },
+      notifier = { enabled = true }, -- Slick notification popups
+      scroll = { enabled = true },   -- Smooth physics-based scrolling
+      statuscolumn = { enabled = true }, -- Better line numbers/signs
+    },
+  },
 }
-
