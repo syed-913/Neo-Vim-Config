@@ -1,110 +1,408 @@
-# LazyVim Configuration: The Modern Neovim Experience
+# Neovim Configuration
 
-This repository contains my personal Neovim configuration, built from the ground up to provide a fast, efficient, and user-friendly development environment. It's designed to be a significant upgrade for those transitioning from older plugin managers like Packer or for anyone looking to optimize their workflow.
+A modular, high-performance Neovim configuration built as a hobby project for daily development and text editing.  This setup prioritizes productivity, customizability, and keymap-driven workflows. 
 
----
+<div align="center">
 
-### Why This Configuration? 🚀
+![Static Badge](https://img.shields.io/badge/v0.11.0-neovim?style=plastic&logo=neovim&label=Neovim&color=%234e9940&link=https%3A%2F%2Fneovim.io%2F)
+![Static Badge](https://img.shields.io/badge/5.1%2B-Lua?style=plastic&logo=lua&logoColor=%23800080&label=Lua&color=%23800080&link=https%3A%2F%2Fwww.lua.org%2F)
+![Static Badge](https://img.shields.io/badge/Latest-LazyVim?style=plastic&logo=lazyvim&logoColor=%232e7de9&logoSize=auto&label=LazyVim&color=%232e7de9&link=https%3A%2F%2Fgithub.com%2Ffolke%2Flazy.nvim)
+![Static Badge](https://img.shields.io/badge/Active-Status?style=plastic&logoColor=%232b9500&logoSize=auto&label=Status&color=%232b9500&link=https%3A%2F%2Fgithub.com%2Fsyed-913%2FNeo-Vim-Config)
 
-#### A Modern Plugin Management System
-This setup leverages **Lazy.nvim**, a next-generation plugin manager that's designed for speed and modularity. Unlike older systems, it loads plugins only when they are needed, drastically reducing Neovim's startup time. This means you get a powerful editor without the performance overhead.
+</div>
 
-#### Key Features for an Enhanced Workflow:
-* ⚡️ **Blazing Fast**: With Lazy.nvim at its core, this configuration ensures minimal startup delays. You get a fully functional editor almost instantly.
-* 🎨 **Advanced Syntax Highlighting**: Powered by `nvim-treesitter`, this config provides precise and semantic syntax highlighting, indenting, and text objects for a wide range of languages including Python, JavaScript, and HTML. This goes beyond simple regex-based highlighting for a more accurate and visually appealing experience.
-* 🔍 **Intuitive Navigation**: `Telescope.nvim` is integrated for a powerful fuzzy-finding experience. Easily search for files, project-wide text, or even Neovim's help documents with simple keybindings.
-* 💡 **Intelligent Autocompletion**: The combination of `nvim-cmp`, `mason-lspconfig`, and GitHub Copilot provides a robust autocompletion and Language Server Protocol (LSP) setup. This gives you features like code actions, refactoring, and accurate type definitions right out of the box, with minimal setup for each language.
-* ✨ **Seamless Integration**: Includes plugins for essential development tasks, such as `nvim-tree` for file system navigation, `nvim-autopairs` for automatic bracket and quote completion, and `vim-fugitive` for powerful Git integration directly in your editor.
-* 🔄 **Automated Formatting & Linting**: Using `conform.nvim` and `nvim-lint`, your code is automatically formatted and checked for errors on save, ensuring a clean and consistent codebase with zero manual effort.
+## About
 
----
+This is a personal Neovim configuration built for daily development work. Previously used [Packer](https://github.com/wbthomason/packer.nvim) as a plugin manager, now optimized with **[Lazy.nvim](https://github.com/folke/lazy.nvim)** for better performance and lazy-loading capabilities.
 
-### Getting Started 💻
-
-#### Prerequisites
-* Neovim v0.9.0 or later
-* Git
-* A C compiler for some plugins.
-* Latest `nodejs` [package](https://nodejs.org/en/download/).
-
-#### Installation Steps:
-1.  **Backup Your Current Configuration**: It's highly recommended to back up your existing Neovim configuration directory first.
-    ```sh
-    mv ~/.config/nvim ~/.config/nvim.bak
-    ```
-2.  **Clone the Repository**: Clone this configuration into your Neovim directory.
-    ```sh
-    git clone [https://github.com/syed-913/Neo-Vim-Config.git](https://github.com/syed-913/Neo-Vim-Config.git) ~/.config/nvim
-    ```
-3.  **Launch Neovim**: Open Neovim for the first time. `Lazy.nvim` will automatically install and set up all the specified plugins. This process may take a few minutes as it downloads and compiles everything.
-    ```sh
-    nvim
-    ```
-4.  **Install Language Servers**: After the initial setup, you can install additional language servers via Mason. Simply run the `:Mason` command and select the language servers you need for your projects.
+> [!NOTE]
+> 
+> This is a feature-rich configuration. It may require **more resources on older machines**. Configuration is actively maintained and updated based on personal development needs.
 
 ---
 
-### Keybindings ⌨️
+## Advantages
 
-This configuration provides a curated set of keybindings to streamline your workflow.
+### Performance & Workflow
+- Fast startup time with lazy-loaded plugins
+- Modular structure for easy customization
+- Comprehensive keymap bindings for complete editor control
+- Smooth, responsive UI with enhanced visuals
 
-#### General:
-| Keybinding | Description |
-|---|---|
-| `<leader>e` | Toggle Nvim-Tree (file explorer) |
-| `<leader>g` | Search for a pattern across all files with Telescope |
-| `<leader>b` | List all open buffers |
-| `<leader>h` | Search Neovim help tags |
-| `<leader>s` | Open the file browser with Telescope |
-| `<leader>t` | Open a new terminal in a horizontal split |
-| `<leader>v` | Open a new terminal in a vertical split |
-| `<leader>tt` | Toggle a floating terminal |
+### Development Features
+- Full LSP support with multiple language servers
+- Smart autocompletion with snippet engine
+- Integrated terminal with multiple layout options
+- Git integration with branch/log/diff visualization
+- Diagnostic viewer with error/warning management
+- Fast file and buffer navigation
 
-#### LSP (Language Server Protocol):
-| Keybinding | Description |
-|---|---|
-| `gD` | Go to declaration |
-| `gd` | Go to definition |
-| `gr` | Find references |
-| `K` | Display hover documentation for the symbol under the cursor |
-| `<leader>ca` | Open code actions menu |
-| `<leader>rn` | Rename the symbol under the cursor |
-| `<leader>D` | Go to type definition |
-
-#### Autocompletion:
-| Keybinding | Description |
-|---|---|
-| `<C-b>` | Scroll documentation up |
-| `<C-f>` | Scroll documentation down |
-| `<C-Space>` | Trigger completion |
-| `<CR>` | Confirm the selected completion item |
-| `<Tab>` | Select next completion item or expand a snippet |
-| `<S-Tab>` | Select previous completion item or jump back in a snippet |
-
-#### Terminal
-| Keybinding | Description |
-|---|---|
-| `<Esc>` | Exit terminal mode |
+### User Experience
+- Custom command-line with syntax highlighting
+- Smart notification and message routing
+- Beautiful diagnostic displays
+- Intuitive symbol and reference navigation
+- Code formatting and refactoring tools
 
 ---
 
-### GitHub Copilot Integration 🤖
+## Prerequisites
 
-This configuration includes optional support for **GitHub Copilot**, an AI pair programmer that provides intelligent code suggestions. The plugin is already included in this configuration, so you only need to perform a simple setup step.
+### Required
+- **Neovim** v0.10.0 or higher
+  - [Installation Guide](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+- **Git** - For plugin management
+- **npm** - For language server installation
+- **Nerd Font** - For icons (e.g., FiraCode Nerd Font)
 
-#### Getting Started
+### Optional but Recommended
+- **ripgrep** - Fast file searching
+  ```bash
+  brew install ripgrep        # macOS
+  sudo apt-get install ripgrep # Ubuntu/Debian
+  sudo dnf install ripgrep     # Fedora
+  ```
 
-To get started with GitHub Copilot, follow these steps:
+- **Delta** - Beautiful git diff viewer
+  ```bash
+  brew install git-delta      # macOS
+  sudo apt-get install git-delta # Ubuntu/Debian
+  ```
 
-1.  **Set Up Copilot**: After your Neovim configuration is installed, open Neovim and run the following command in Normal mode:
-    ```
-    :Copilot setup
-    ```
-    This command will provide you with a device code and open a browser window for you to sign in to your GitHub account.
-
-2.  **Authentication**: Once you have authenticated in your browser, Copilot will be active and ready to provide code suggestions directly in your editor.
+### Language-specific Tools
+- **Python** - `pip install black flake8 mypy pylint`
+- **Rust** - `cargo install rust-analyzer`
+- **Node.js** - Included TypeScript/JavaScript support
 
 ---
 
-I hope to continue updating this configuration as I learn and discover new ways to make my development workflow more productive.
-````
+## Installation
+
+### 1. Backup Existing Configuration
+```bash
+mv ~/.config/nvim ~/.config/nvim.backup
+```
+
+### 2. Clone Repository
+```bash
+git clone https://github.com/syed-913/Neo-Vim-Config ~/.config/nvim
+```
+
+### 3. Install Language Servers
+Open Neovim and run:
+```vim
+:Mason
+```
+
+Install recommended servers:
+- pyright (Python)
+- lua_ls (Lua)
+- bashls (Bash)
+- html (HTML)
+- cssls (CSS)
+- ts_ls (TypeScript/JavaScript)
+
+Or auto-install with `:MasonInstallAll`
+
+### 4. Verify Installation
+```vim
+:checkhealth nvim.lsp
+:checkhealth snacks
+:checkhealth noice
+```
+
+---
+
+## Configuration Structure
+
+```
+~/.config/nvim/
+├── init.lua                # Main entry point, gloabl keymap maintainer and configuration loader
+└── lua
+    └── plugins
+        ├── completion.lua  # Autocompletion and snippet engine settings
+        ├── core.lua        # Essential Neovim options and core plugin setup
+        ├── formatting.lua  # Code formatting and linting configuration
+        ├── misc.lua        # Small, standalone utility plugins
+        ├── noice.lua       # Highly customized UI for messages, cmdline, and popupmenu
+        ├── snacks.lua      # Main configuration for the Snacks.nvim utility suite
+        ├── snacks_picker.lua # Fuzzy finder and picker settings for Snacks
+        ├── snacks_ui.lua   # UI-specific enhancements powered by Snacks
+        ├── snacks_utils.lua # Custom helper functions and utilities for Snacks
+        ├── trouble.lua     # Diagnostics, LSP references, and quickfix management
+        └── visuals.lua     # Aesthetic plugins (statusline, bufferline, themes)t
+```
+
+---
+
+## List of Plugins
+
+### Plugin Manager
+| Plugin | Purpose |
+|--------|---------|
+| lazy.nvim | Fast plugin manager with lazy-loading |
+
+### LSP & Completion
+| Plugin | Purpose |
+|--------|---------|
+| nvim-lspconfig | LSP client configuration |
+| mason.nvim | LSP/formatter/linter installer |
+| mason-lspconfig.nvim | Mason and lspconfig integration |
+| nvim-cmp | Autocompletion engine |
+| cmp-nvim-lsp | LSP source for nvim-cmp |
+| cmp-buffer | Buffer words completion |
+| cmp-path | Path completion |
+| cmp-cmdline | Command-line completion |
+| LuaSnip | Snippet engine |
+| cmp_luasnip | Snippet source for nvim-cmp |
+
+### UI & Visual Enhancements
+| Plugin | Purpose |
+|--------|---------|
+| noice.nvim | Beautiful UI for command-line, messages, popupmenu |
+| trouble.nvim | Diagnostics and references viewer |
+| snacks.nvim | Utilities including picker, terminal, explorer |
+| nvim-notify | Notification system |
+| nvim-web-devicons | File icons |
+
+### File & Buffer Management
+| Plugin | Purpose |
+|--------|---------|
+| snacks.nvim picker | Fast file search and navigation |
+| snacks.nvim explorer | File tree explorer |
+| snacks.nvim terminal | Integrated terminal with multiple layouts |
+
+### Optional Enhancements
+| Plugin | Purpose |
+|--------|---------|
+| nvim-treesitter | Syntax highlighting and tree-sitter integration |
+| vim-sneak | Fast motion with 2-character search |
+
+---
+
+## Keymap Overview
+
+### Navigation & LSP
+```
+gd      - Go to definition
+gD      - Go to declaration
+K       - Hover documentation
+gr      - Find references
+gi      - Go to implementation
+gy      - Go to type definition
+<C-k>   - Signature help
+```
+
+### File & Buffer Management
+```
+<leader>ff   - Find files
+<leader>fg   - Find git files
+<leader>fr   - Find recent files
+<leader>,    - Open buffer picker
+<leader>bn   - Next buffer
+<leader>bp   - Previous buffer
+<leader>bd   - Delete buffer
+```
+
+### Search & Grep
+```
+<leader>/    - Grep search
+<leader>sg   - Grep in project
+<leader>sw   - Grep word under cursor
+<leader>sk   - Search keymaps
+<leader>sC   - Search commands
+```
+
+### Terminal
+```
+<C-t>        - Toggle terminal (bottom)
+<leader>tf   - Floating terminal
+<leader>ts   - Split terminal
+<leader>tv   - Vertical split terminal
+<Esc>        - Exit terminal mode
+```
+
+### Diagnostics & Trouble
+```
+<leader>xx   - Toggle all diagnostics
+<leader>xX   - Toggle buffer diagnostics
+<leader>xL   - Toggle location list
+<leader>xQ   - Toggle quickfix list
+<leader>cs   - Toggle symbols
+]d           - Next diagnostic
+[d           - Previous diagnostic
+```
+
+### Code Actions
+```
+<leader>rn   - Rename symbol
+<leader>ca   - Code actions
+<leader>fm   - Format code
+```
+
+### Noice & Messages
+```
+<leader>nh   - Noice history
+<leader>nl   - Last message
+<leader>ne   - Show errors
+<leader>nw   - Show warnings
+<leader>nd   - Dismiss notifications
+```
+
+### Git Integration
+```
+<leader>gb   - Git branches
+<leader>gl   - Git log
+<leader>gs   - Git status
+<leader>gd   - Git diff
+```
+
+---
+
+## Quick Start Guide
+
+### Opening Files
+1. Press `<leader>ff` to open file finder
+2. Type to search for files
+3. Press `<Enter>` to open or `<C-v>` for vertical split
+
+### Using LSP Features
+1. Hover over a symbol and press `K` for documentation
+2. Press `gd` to jump to definition
+3. Press `gr` to find all references
+4. Press `<leader>ca` for code actions
+
+### Terminal Usage
+1. Press `<C-t>` to open terminal at bottom
+2. Run commands as normal
+3. Press `q` to hide (terminal keeps running)
+4. Press `<C-t>` again to show
+
+### Searching Project
+1. Press `<leader>/` for grep search
+2. Type search pattern
+3. Navigate results with arrow keys
+4. Press `<Enter>` to jump to match
+
+### Managing Diagnostics
+1. Press `<leader>xx` to open diagnostics
+2. Press `gb` to filter current buffer only
+3. Press `s` to toggle by severity level
+4. Press `<Enter>` to jump to error location
+
+---
+
+## Customization
+
+### Adding New Language Server
+Edit `lua/plugins/lsp.lua` and add to `ensure_installed`:
+```lua
+ensure_installed = {
+  "pyright",
+  "rust_analyzer",  -- Add new server
+},
+```
+
+Then run `:Mason` to install.
+
+### Creating Custom Keymaps
+Add to `init.lua`:
+```lua
+vim.keymap.set("n", "<leader>custom", function()
+  -- Your custom function
+end, { desc = "Custom action" })
+```
+
+### Changing Theme
+Edit `visuals.lua`:
+```lua
+vim.cmd.colorscheme("tokyonight-night")
+```
+
+Popular themes:  catppuccin, gruvbox, nord, dracula, onedark
+
+### Extending Configuration
+Create new plugin file in `lua/plugins/` and Lazy.nvim will auto-load it: 
+```lua
+return {
+  {
+    "author/plugin-name",
+    event = "VeryLazy",
+    opts = { },
+  },
+}
+```
+
+---
+
+## Troubleshooting
+
+### LSP Not Attaching
+```vim
+:LspInfo
+: checkhealth nvim.lsp
+```
+Solution: Run `:Mason` and install language servers.
+
+### Completions Not Showing
+Press `<C-Space>` in insert mode. Verify LSP is attached with `:LspInfo`.
+
+### Slow Startup
+Run `:Snacks profile` to identify slow plugins. Consider lazy-loading heavy plugins.
+
+### Icons Not Displaying
+Install a Nerd Font and set it in your terminal. Restart Neovim.
+
+### Keymaps Not Working
+Check if registered:  `:map <your-keymap>`
+Verify the configuration file is loaded properly.
+
+---
+
+## Performance Notes
+
+This is a comprehensive configuration with many features. On older machines, you may experience: 
+- Longer startup time (typically 100-300ms)
+- Memory usage increase with all plugins loaded
+- Slight lag with large files or heavy operations
+
+To optimize:
+1. Disable unused plugins in `lua/plugins/`
+2. Use `:Snacks profile` to find bottlenecks
+3. Enable selective language servers
+
+---
+
+## Tips & Tricks
+
+### Quick Command Search
+Press `<leader>sC` to search and execute any command. 
+
+### Keymap Discovery
+Press `<leader>sk` to search keymaps by name and execute them.
+
+### Project-wide Grep
+Press `<leader>/` and start typing to search entire project instantly.
+
+### Terminal Multitasking
+Keep terminal running in background with `q`, work in editor, then toggle back with `<C-t>`.
+
+### LSP References in Trouble
+Press `gr` then `<leader>cl` to view all references in a nice organized list.
+
+---
+
+## Credits
+
+Built with inspiration from the Neovim community and these excellent plugins:
+- [folke/lazy.nvim](https://github.com/folke/lazy.nvim)
+- [folke/trouble.nvim](https://github.com/folke/trouble.nvim)
+- [folke/noice.nvim](https://github.com/folke/noice.nvim)
+- [folke/snacks.nvim](https://github.com/folke/snacks.nvim)
+- [neovim/nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+
+## Stay Updated
+
+This configuration is actively maintained and updated.  Watch the repository for new features and improvements. 
+
+Made with dedication by [@syed-913](https://github.com/syed-913)
