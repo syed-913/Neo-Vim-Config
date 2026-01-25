@@ -80,7 +80,7 @@ return {
     build = ":TSUpdate",
     event = "BufReadPost",
     config = function()
-      require("nvim-treesitter.configs").setup({
+      require("nvim-treesitter").setup({
         ensure_installed = { "bash", "python", "lua", "html", "css", "javascript" },
         highlight = { enable = true },
         indent = { enable = true },
