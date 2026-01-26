@@ -185,7 +185,7 @@ return {
       -- NOTIFICATIONS
       -- ====================================
       notify = {
-        enabled = false,  -- Use nvim-notify or snacks
+        enabled = true,  -- Use nvim-notify or snacks
       },
 
       -- ====================================
